@@ -1,30 +1,21 @@
-import { startMatrixApplication, clearMatrix, setCell, KeyPress } from "node-cli-character-matrix";
+import { startMatrixApplication, clearMatrix, setCell } from "node-cli-character-matrix";
 
-const N_ROWS = 15;
-const N_COLUMNS = 15;
-const INTERVAL_MS = 300;
-
-/**
- * Functional/folding style of state management
- */
+const N_ROWS = 5;
+const N_COLUMNS = 5;
+const INTERVAL_MS = 100;
 
 startMatrixApplication({
 	nRows: N_ROWS,
 	nColumns: N_COLUMNS,
 	intervalTime: INTERVAL_MS,
-	initialState: {
+	onTick: (matrix, tickCount, exit) => {
+		const clearedMatrix = clearMatrix(matrix);
+		const newMatrix = setCell(clearedMatrix, tickCount % N_ROWS, tickCount % N_COLUMNS, 'X');
 
+		if (tickCount > 20) {
+			exit("Thank you for playing!");
+		}
+		return {newMatrix, newState: null};
 	},
-	onTick: (matrix, tickCount, exit, keyPress, oldState) => {
-
-		return {
-			newMatrix, 
-			newState: {
-		
-			}
-		}; 
-
-	}
+	initialState: null,
 });
-
-
